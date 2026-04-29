@@ -1,129 +1,170 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <title>Document</title>
+    <title>Registro Premium | Supabase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .card-custom {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-control {
+            background: rgba(15, 23, 42, 0.6) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+        }
+
+        #mensaje {
+            font-size: 0.9rem;
+            font-weight: 500;
+            min-height: 24px;
+        }
+    </style>
 </head>
 
-<body class="bg-dark text-light" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card bg-secondary text-white border-light">
-                    <div class="card-body text-center">
-                        <h4 class="mb-4">Registro</h4>
-                        <form onsubmit="registrar(event)">
-                            <div class="mb-3 text-start">
-                                <label for="exampleInputName" class="form-label">Nombre</label>
-                                <input type="text" class="form-control bg-dark text-white border-secondary" id="name">
-                            </div>
-                            <div class="mb-3 text-start">
-                                <label for="exampleInputEmail1" class="form-label">Email</label>
-                                <input type="email" class="form-control bg-dark text-white border-secondary" id="email">
-                            </div>
-                            <div class="mb-3 text-start">
-                                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control bg-dark text-white border-secondary"
-                                    id="password">
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Registrar</button>
-                        </form>
-                    </div>
+<body>
+    <div class="container d-flex justify-content-center">
+        <div class="card-custom animate__animated animate__zoomIn">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-white mb-1">Bienvenido</h2>
+                <p class="text-secondary small">Crea tu cuenta en segundos</p>
+            </div>
+            
+            <form onsubmit="registrar(event)">
+                <div class="mb-3">
+                    <label class="form-label text-light small">Nombre Completo</label>
+                    <input type="text" class="form-control" id="name" placeholder="Tu nombre" required>
                 </div>
-            </div>
-            <div id="mensaje" class="text-center mt-4">
-                <!-- <span class="text-"></span> -->
+                <div class="mb-3">
+                    <label class="form-label text-light small">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-light small">Contraseña</label>
+                    <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-premium w-100 mt-2">Registrar Ahora</button>
+            </form>
 
-            </div>
+            <div id="mensaje" class="text-center mt-4"></div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         const Urlsupabase = "https://btjpzjceyolyegvrntym.supabase.co";
         const apikeysupabase = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0anB6amNleW9seWVndnJudHltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NzM2OTgsImV4cCI6MjA5MzA0OTY5OH0.hcSyE7QtupuklxsQMTquMJUv2ENIpnkEU6ty_IMJXPg";
         const clientsupabase = supabase.createClient(Urlsupabase, apikeysupabase);
-        
 
         async function registrar(e) {
-            e.preventdefault();
+            e.preventDefault(); // Corregido: D mayúscula
 
-            const name = document.getElementById("nombre").value;
+            const name = document.getElementById("name").value;
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
             const mensaje = document.getElementById("mensaje");
 
-            mensaje.innerHTML = "Registrando...";
+            mensaje.innerHTML = '<span class="text-info animate__animated animate__fadeIn">Procesando...</span>';
 
             try {
-                const {data, error}= await clientsupabase.auth.signUp(
-                    {
+                const { data, error } = await clientsupabase.auth.signUp({
                     email: email,
                     password: password,
-                }
-            );
+                });
+
                 if (error) {
-                    mensaje.innerHTML = `<span class="text-warning">Error : ${error.message}</span>`;
+                    mensaje.innerHTML = `<span class="text-warning">Aviso: ${error.message}</span>`;
                     return;
                 }
-                
+
                 const user = data.user;
 
                 if (!user) {
-                    mensaje.innerHTML = `<span class="text-warning">Confirma tu email</span>`;
+                    mensaje.innerHTML = `<span class="text-info">Revisa tu bandeja de entrada</span>`;
                     return;
                 }
 
-                const {error: errorInsert} = await clientsupabase.from("usuarios")
-                .insert(
-                    [{
+                // Inserción en tabla con el punto corregido
+                const { error: errorInsert } = await clientsupabase
+                    .from("usuarios") 
+                    .insert([{
                         id: user.id,
                         name: name,
-                    }
-                    ]
-                );
+                    }]);
 
-                if (errorInsert){
-                    mensaje.innerHTML = `<span class="text-warning">Error: ${errorInsert.message}</span>`;
+                if (errorInsert) {
+                    mensaje.innerHTML = `<span class="text-danger">Error tabla: ${errorInsert.message}</span>`;
                     return;
                 }
 
-                mensaje.innerHTML = `<span class="text-success">El registro fue exitoso</span>`;
+                mensaje.innerHTML = `<span class="text-success animate__animated animate__bounceIn">¡Registro completado con éxito!</span>`;
 
-
-            } catch(erro){
+            } catch (err) { // Corregido: Variable err consistente
                 mensaje.innerHTML = `<span class="text-danger">Error inesperado</span>`;
                 console.error(err);
             }
         }
 
-
-        async function probarConexion(params) {
+        async function probarConexion() {
             const { data, error } = await clientsupabase
                 .from("usuarios")
                 .select("*")
-                .limit(1)
-                ;
+                .limit(1);
 
             if (error) {
-                console.error("Error al conectar a Supabase:", error.message);
+                console.warn("Conexión activa, esperando primer registro.");
             } else {
-                console.log("Conexión exitosa:", data);
+                console.log("Conexión exitosa con Supabase:", data);
             }
         }
 
         probarConexion();
     </script>
 </body>
-
 </html>
