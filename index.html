@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body class="bg-dark text-light" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card bg-secondary text-white border-light">
+                    <div class="card-body text-center">
+                        <h4 class="mb-4">Registro</h4>
+                        <form onsubmit="registrar(event)">
+                            <div class="mb-3 text-start">
+                                <label for="exampleInputName" class="form-label">Nombre</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary" id="name">
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label for="exampleInputEmail1" class="form-label">Email</label>
+                                <input type="email" class="form-control bg-dark text-white border-secondary" id="email">
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control bg-dark text-white border-secondary"
+                                    id="password">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Registrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="mensaje" class="text-center mt-4">
+                <!-- <span class="text-"></span> -->
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+
+    <script>
+        const Urlsupabase = "https://btjpzjceyolyegvrntym.supabase.co";
+        const apikeysupabase = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0anB6amNleW9seWVndnJudHltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NzM2OTgsImV4cCI6MjA5MzA0OTY5OH0.hcSyE7QtupuklxsQMTquMJUv2ENIpnkEU6ty_IMJXPg";
+        const clientsupabase = supabase.createClient(Urlsupabase, apikeysupabase);
+        
+
+        async function registrar(e) {
+            e.preventdefault();
+
+            const name = document.getElementById("nombre").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const mensaje = document.getElementById("mensaje");
+
+            mensaje.innerHTML = "Registrando...";
+
+            try {
+                const {data, error}= await clientsupabase.auth.signUp(
+                    {
+                    email: email,
+                    password: password,
+                }
+            );
+                if (error) {
+                    mensaje.innerHTML = `<span class="text-warning">Error : ${error.message}</span>`;
+                    return;
+                }
+                
+                const user = data.user;
+
+                if (!user) {
+                    mensaje.innerHTML = `<span class="text-warning">Confirma tu email</span>`;
+                    return;
+                }
+
+                const {error: errorInsert} = await clientsupabase.from("usuarios")
+                .insert(
+                    [{
+                        id: user.id,
+                        name: name,
+                    }
+                    ]
+                );
+
+                if (errorInsert){
+                    mensaje.innerHTML = `<span class="text-warning">Error: ${errorInsert.message}</span>`;
+                    return;
+                }
+
+                mensaje.innerHTML = `<span class="text-success">El registro fue exitoso</span>`;
+
+
+            } catch(erro){
+                mensaje.innerHTML = `<span class="text-danger">Error inesperado</span>`;
+                console.error(err);
+            }
+        }
+
+
+        async function probarConexion(params) {
+            const { data, error } = await clientsupabase
+                .from("usuarios")
+                .select("*")
+                .limit(1)
+                ;
+
+            if (error) {
+                console.error("Error al conectar a Supabase:", error.message);
+            } else {
+                console.log("Conexión exitosa:", data);
+            }
+        }
+
+        probarConexion();
+    </script>
+</body>
+
+</html>
