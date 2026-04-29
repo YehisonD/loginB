@@ -3,114 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Premium | Supabase</title>
+    <title>Nitro Registry | Speed & Style</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&family=Roboto:wght@300;700&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff00ea;
+            --dark-bg: #050505;
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            background-color: var(--dark-bg);
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+                url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1920'); /* Imagen de fondo de auto oscuro */
+            background-size: cover;
+            background-position: center;
+            font-family: 'Roboto', sans-serif;
+            color: white;
             height: 100vh;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            margin: 0;
         }
 
-        .card-custom {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        /* Pantalla de Carga (Loader) */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 400px;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
         }
 
+        .speedometer {
+            width: 100px;
+            height: 100px;
+            border: 5px solid #333;
+            border-top: 5px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 0.5s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Contenedor Principal */
+        .glass-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 242, 255, 0.2);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Logo Neón Estilo Porsche/Deportivo */
+        .car-logo {
+            font-family: 'Racing Sans One', cursive;
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+            margin-bottom: 20px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        /* Inputs Estilo Dashboard */
         .form-control {
-            background: rgba(15, 23, 42, 0.6) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-left: 4px solid var(--neon-blue) !important;
             color: white !important;
-            border-radius: 10px;
-            transition: all 0.3s ease;
+            padding: 12px;
+            margin-bottom: 15px;
+            transition: 0.3s;
         }
 
         .form-control:focus {
-            border-color: #3b82f6 !important;
-            box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+            background: rgba(0, 242, 255, 0.1) !important;
+            border-color: var(--neon-blue) !important;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
         }
 
-        .btn-premium {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            padding: 12px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        /* Botón Nitro */
+        .btn-nitro {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-family: 'Racing Sans One', sans-serif;
+            font-size: 1.5rem;
+            padding: 10px;
+            width: 100%;
+            border-radius: 50px;
+            text-transform: uppercase;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-premium:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+        .btn-nitro:hover {
+            background: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 40px var(--neon-blue);
+            transform: scale(1.05);
         }
 
         #mensaje {
-            font-size: 0.9rem;
-            font-weight: 500;
-            min-height: 24px;
+            margin-top: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
+
     </style>
 </head>
-
 <body>
-    <div class="container d-flex justify-content-center">
-        <div class="card-custom animate__animated animate__zoomIn">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold text-white mb-1">Bienvenido</h2>
-                <p class="text-secondary small">Crea tu cuenta en segundos</p>
-            </div>
-            
-            <form onsubmit="registrar(event)">
-                <div class="mb-3">
-                    <label class="form-label text-light small">Nombre Completo</label>
-                    <input type="text" class="form-control" id="name" placeholder="Tu nombre" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-light small">Correo Electrónico</label>
-                    <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-light small">Contraseña</label>
-                    <input type="password" class="form-control" id="password" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-premium w-100 mt-2">Registrar Ahora</button>
-            </form>
 
-            <div id="mensaje" class="text-center mt-4"></div>
+    <div id="loader">
+        <div class="speedometer"></div>
+        <h2 class="mt-4 animate__animated animate__pulse animate__infinite" style="font-family: 'Racing Sans One'; color: var(--neon-blue);">CALENTANDO MOTORES...</h2>
+    </div>
+
+    <div class="glass-card animate__animated animate__fadeInUp">
+        <div class="text-center">
+            <div class="car-logo">NITRO</div>
+            <p class="text-uppercase small mb-4" style="color: var(--neon-blue); letter-spacing: 3px;">Join the elite racing club</p>
         </div>
+
+        <form onsubmit="registrar(event)">
+            <div class="mb-3">
+                <input type="text" class="form-control" id="name" placeholder="PILOTO / NOMBRE" required>
+            </div>
+            <div class="mb-3">
+                <input type="email" class="form-control" id="email" placeholder="GARAGE / EMAIL" required>
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="password" placeholder="LLAVE / CONTRASEÑA" required>
+            </div>
+            <button type="submit" class="btn btn-nitro">ARRANCAR</button>
+        </form>
+
+        <div id="mensaje" class="text-center"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Ocultar Loader después de 2 segundos
+        window.onload = () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 800);
+            }, 2000);
+        };
+
         const Urlsupabase = "https://btjpzjceyolyegvrntym.supabase.co";
         const apikeysupabase = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0anB6amNleW9seWVndnJudHltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NzM2OTgsImV4cCI6MjA5MzA0OTY5OH0.hcSyE7QtupuklxsQMTquMJUv2ENIpnkEU6ty_IMJXPg";
         const clientsupabase = supabase.createClient(Urlsupabase, apikeysupabase);
 
         async function registrar(e) {
-            e.preventDefault(); // Corregido: D mayúscula
+            e.preventDefault(); 
 
             const name = document.getElementById("name").value;
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
             const mensaje = document.getElementById("mensaje");
 
-            mensaje.innerHTML = '<span class="text-info animate__animated animate__fadeIn">Procesando...</span>';
+            mensaje.innerHTML = '<span style="color: #ffcc00;">INYECTANDO COMBUSTIBLE...</span>';
 
             try {
                 const { data, error } = await clientsupabase.auth.signUp({
@@ -119,52 +195,35 @@
                 });
 
                 if (error) {
-                    mensaje.innerHTML = `<span class="text-warning">Aviso: ${error.message}</span>`;
+                    mensaje.innerHTML = `<span style="color: red;">FALLO DE MOTOR: ${error.message}</span>`;
                     return;
                 }
 
                 const user = data.user;
 
-                if (!user) {
-                    mensaje.innerHTML = `<span class="text-info">Revisa tu bandeja de entrada</span>`;
-                    return;
+                if (user) {
+                    const { error: errorInsert } = await clientsupabase
+                        .from("usuarios")
+                        .insert([{
+                            id: user.id,
+                            name: name,
+                        }]);
+
+                    if (errorInsert) {
+                        mensaje.innerHTML = `<span style="color: red;">ERROR EN PISTA: ${errorInsert.message}</span>`;
+                        return;
+                    }
+
+                    mensaje.innerHTML = `<span style="color: #00f2ff;" class="animate__animated animate__flash">¡CARRERA INICIADA! REGISTRO EXITOSO</span>`;
+                } else {
+                    mensaje.innerHTML = `<span style="color: #ffcc00;">REVISA TU CORREO PARA EL ACCESO</span>`;
                 }
 
-                // Inserción en tabla con el punto corregido
-                const { error: errorInsert } = await clientsupabase
-                    .from("usuarios") 
-                    .insert([{
-                        id: user.id,
-                        name: name,
-                    }]);
-
-                if (errorInsert) {
-                    mensaje.innerHTML = `<span class="text-danger">Error tabla: ${errorInsert.message}</span>`;
-                    return;
-                }
-
-                mensaje.innerHTML = `<span class="text-success animate__animated animate__bounceIn">¡Registro completado con éxito!</span>`;
-
-            } catch (err) { // Corregido: Variable err consistente
-                mensaje.innerHTML = `<span class="text-danger">Error inesperado</span>`;
+            } catch (err) {
+                mensaje.innerHTML = `<span style="color: red;">CRASH INESPERADO</span>`;
                 console.error(err);
             }
         }
-
-        async function probarConexion() {
-            const { data, error } = await clientsupabase
-                .from("usuarios")
-                .select("*")
-                .limit(1);
-
-            if (error) {
-                console.warn("Conexión activa, esperando primer registro.");
-            } else {
-                console.log("Conexión exitosa con Supabase:", data);
-            }
-        }
-
-        probarConexion();
     </script>
 </body>
 </html>
